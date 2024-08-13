@@ -66,6 +66,16 @@ router.post("/teams/new/:id", async (req, res) => {
     }
 })
 
+router.delete("/teams/:id", async (req, res) =>{
+    try {
+        const {id} = req.params;
+        await sql`delete from jogadores where id = ${id}`;
+        return res.status(200).json('ok')
+    } catch (error) {
+        return res.status(500).json('error to delete team')
+    }
+})
+
 router.get("/teams/players/:id", async (req, res) => {
     try {
         const {id} = req.params;
@@ -83,7 +93,7 @@ router.post("/teams/players/:id", async (req, res) => {
         await sql`insert into jogadores(nome, fk_times) values(${nome},${id})`
         return res.status(200).json('ok')
     } catch (error) {
-        return res.status(500).json('error to get players')
+        return res.status(500).json('error to add player')
     }
 })
 
