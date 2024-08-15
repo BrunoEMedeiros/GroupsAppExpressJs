@@ -66,10 +66,10 @@ router.post("/teams/new/:id", async (req, res) => {
     }
 })
 
-router.delete("/teams/:id", async (req, res) =>{
+router.delete("/teams/:id", async(req, res)=>{
     try {
-        const {id} = req.params;
-        await sql`delete from jogadores where id = ${id}`;
+        const { id } = req.params;
+        await sql`delete from times where id = ${id}`
         return res.status(200).json('ok')
     } catch (error) {
         return res.status(500).json('error to delete team')
@@ -79,7 +79,7 @@ router.delete("/teams/:id", async (req, res) =>{
 router.get("/teams/players/:id", async (req, res) => {
     try {
         const {id} = req.params;
-        const select = await sql`select * from jogadores where fk_times = ${id}`
+        const select = await sql`select * from jogadores where fk_time = ${id}`
         return res.status(200).json(select)
     } catch (error) {
         return res.status(500).json('error to get players')
@@ -90,10 +90,20 @@ router.post("/teams/players/:id", async (req, res) => {
     try {
         const {id} = req.params;
         const {nome} = req.body;
-        await sql`insert into jogadores(nome, fk_times) values(${nome},${id})`
+        await sql`insert into jogadores(nome, fk_time) values(${nome},${id})`
         return res.status(200).json('ok')
     } catch (error) {
         return res.status(500).json('error to add player')
+    }
+})
+
+router.delete("/teams/players/:id", async (req, res) =>{
+    try {
+        const {id} = req.params;
+        await sql`delete from jogadores where id = ${id}`;
+        return res.status(200).json('ok')
+    } catch (error) {
+        return res.status(500).json('error to delete team')
     }
 })
 
